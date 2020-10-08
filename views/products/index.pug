@@ -1,0 +1,115 @@
+extends ../layout/common
+
+block content
+    h1 Products
+
+    - var item = 1;
+    - var temp = totalPage - (pagi - 3) + 1; //8
+    - var prev = page - 1;
+    - var next = page + 1;
+
+    if !page 
+        h3 NotFound
+    else
+        if totalPage <= 9 
+            nav(aria-label='Page navigation')
+                ul.pagination
+                    if page === 1
+                        li.page-item.disabled
+                            a.page-link(href='', aria-label='Previous')
+                                span(aria-hidden='true') &laquo;
+                    else
+                        li.page-item
+                            a.page-link(href='/products?page=' + prev, aria-label='Previous')
+                                span(aria-hidden='true') &laquo;
+
+                    while item <= pagi
+                        if page === item
+                            li.page-item.active
+                                a.page-link(href="/products?page=" + item)= item++
+                        else
+                            li.page-item
+                                a.page-link(href="/products?page=" + item)= item++
+
+                    if page === totalPage
+                        li.page-item.disabled
+                            a.page-link(href='', aria-label='Next')
+                                span(aria-hidden='true') &raquo;
+                    else
+                        li.page-item
+                            a.page-link(href='/products?page=' + next, aria-label='Next')
+                                span(aria-hidden='true') &raquo;
+        else
+            nav(aria-label='Page navigation')
+                ul.pagination
+                    if (page === 1)
+                        li.page-item.disabled
+                            a.page-link(href='', aria-label='Previous')
+                                span(aria-hidden='true') &laquo;
+                    else
+                        li.page-item
+                            a.page-link(href='/products?page=' + prev, aria-label='Previous')
+                                span(aria-hidden='true') &laquo;
+
+                    if page <= pagi - step - 1
+                        while item < pagi
+                            if page === item
+                                li.page-item.active
+                                    a.page-link(href="/products?page=" + item)= item++
+                            else
+                                li.page-item
+                                    a.page-link(href="/products?page=" + item)= item++
+                        li.page-item
+                            a.page-link(href='', style="pointer-events: none;") ... 
+
+                    else if page < totalPage - step - 1
+                            li.page-item
+                                a.page-link(href='/products?page=1') 1
+                            li.page-item
+                                a.page-link(href='/products?page=2') 2
+                            li.page-item
+                                a.page-link(href='', style="pointer-events: none;") ... 
+                            while p1 <= p2
+                                if page === p1
+                                    li.page-item.active
+                                        a.page-link(href="/products?page=" + p1)= p1++
+                                else
+                                    li.page-item
+                                        a.page-link(href="/products?page=" + p1)= p1++
+                            li.page-item
+                                a.page-link(href='', style="pointer-events: none;") ...    
+                        
+                    else if page <= totalPage
+                            li.page-item
+                                a.page-link(href='/products?page=1') 1
+                            li.page-item
+                                a.page-link(href='/products?page=2') 2
+                            li.page-item
+                                a.page-link(href='', style="pointer-events: none;") ... 
+                            while temp <= totalPage
+                                if page === temp
+                                    li.page-item.active
+                                        a.page-link(href="/products?page=" + temp)= temp++
+                                else
+                                    li.page-item
+                                        a.page-link(href="/products?page=" + temp)= temp++
+
+                    if page === totalPage
+                        li.page-item.disabled
+                            a.page-link(href='', aria-label='Next')
+                                span(aria-hidden='true') &raquo;
+                    else
+                        li.page-item
+                            a.page-link(href='/products?page=' + next, aria-label='Next')
+                                span(aria-hidden='true') &raquo;
+
+        .products
+            each product in products
+                .card
+                    img.card-img-top(src=product.image, alt='...')
+                    .card-body
+                        h5.card-title= product.name
+                        p.card-text= product.description
+                        a.btn.btn-primary(href='/cart/add/' + product.id) Add to cart
+            else
+                h1 No search results found

@@ -5,6 +5,8 @@ html
         script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js', integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj', crossorigin='anonymous')
         script(src='https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js', integrity='sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN', crossorigin='anonymous')
         script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js', integrity='sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV', crossorigin='anonymous')
+        style
+            include ./style.css
 
     body(class="container")
         nav.navbar.navbar-expand-lg.navbar-light.bg-light
@@ -16,6 +18,22 @@ html
                     li.nav-item
                         a.nav-link(href='#') Home
                     li.nav-item
-                        a.nav-link(href='#') Users
+                        a.nav-link(href='/users') Users
+                    li.nav-item
+                        a.nav-link(href='/products') Products
+                    li.nav-item
+                        a.nav-link(href='/transfer/create') Transfer
+            .cart
+                span Cart = {
+                span= count
+                span }     
+            if user
+                a(href="/auth/logout") Logout
+                p= user.email.substring(0, user.email.lastIndexOf("@"))
+            else
+                a(href="/auth/signup") Sign up
+                a(href="/auth/login") Login
+
+           
         .container.pt-5
             block content

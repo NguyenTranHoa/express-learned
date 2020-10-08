@@ -9,7 +9,7 @@ module.exports.index = (req, res) => {
 
 module.exports.search = (req, res) => {
     let q = req.query.q;
-    let resultUsers = db.get("users").value().filter((user) => user.name.toLowerCase().indexOf(q.toLowerCase()) !== -1)
+    let resultUsers =  db.get("users").value().filter(user => user.email.substring(0, user.email.lastIndexOf("@")));
 
     res.render("users/index", {
         users: resultUsers,
@@ -23,26 +23,13 @@ module.exports.create = (req, res) => {
 
 module.exports.postCreate = (req, res) => {
     req.body.id = shortid.generate();
-    let errors = [];
-    if(!req.body.name) {
-        errors.push("Name is required.")
-    }
-    if(!req.body.phone) {
-        errors.push("Phone is required.")
-    }
-    if(errors.length) {
-        res.render("users/create", {
-            errors: errors,
-            values: req.body
-        })
-        return;
-    }
+    req.body.avatar = req.file.path.split("/").slice(1).join("/");
     db.get("users").push(req.body).write();
     res.redirect("/users");
 }
 
 module.exports.view = (req, res) => {
     const id = req.params.id;
-    const user = db.get("users").find({ id: id}).value();
-    res.render("users/view", { user: user });
+    const users = db.get("users").find({ id }).value();
+    res.render("users/view", { users });
 }

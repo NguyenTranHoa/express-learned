@@ -8,13 +8,14 @@ block content
         button Search
     table.table
         tr 
-            th Name
-            th Phone
+            th Avatar
+            th Email
             th Action
         
         each user in users 
             tr
-                td= user.name 
-                td= user.phone
+                td
+                    img(src=user.avatar, width= 32)
+                td= user.email 
                 td 
                     a(href="/users/" + user.id) View
